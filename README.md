@@ -10,7 +10,7 @@ actually see them work instead of just memorizing header names. Turns out
 writing the scanner taught me more about how HTTP responses fit together than
 the textbook chapters did.
 
-**Please don't scan sites you don't own.** I mean it. Running even light
+Please don't scan sites you don't own. I mean it. Running even light
 probes against someone else's site without written permission can get you in
 real legal trouble, and it's just not worth it. This is for your own projects,
 labs, and authorized work.
@@ -19,25 +19,25 @@ labs, and authorized work.
 
 Passive stuff first:
 
-- `Content-Security-Policy` (medium if missing) — the main defense against XSS
-- `Strict-Transport-Security` (medium) — forces HTTPS, stops SSL-stripping
-- `X-Frame-Options` (low) — keeps your page out of other people's iframes
-- `X-Content-Type-Options` (low) — `nosniff`, stops MIME-sniffing tricks
-- `Referrer-Policy` (info) — keeps tokens out of the Referer header
+- `Content-Security-Policy` (medium if missing): the main defense against XSS
+- `Strict-Transport-Security` (medium): forces HTTPS, stops SSL-stripping
+- `X-Frame-Options` (low): keeps your page out of other people's iframes
+- `X-Content-Type-Options` (low): `nosniff`, stops MIME-sniffing tricks
+- `Referrer-Policy` (info): keeps tokens out of the Referer header
 - Cookie flags: `HttpOnly`, `Secure`, `SameSite` (medium/low when missing)
 
 Then three active probes, all benign and read-only:
 
-- **Reflected XSS** — drops `<script>alert(1)</script>` in a query param and
+- Reflected XSS: drops `<script>alert(1)</script>` in a query param and
   checks if it comes back unescaped. High severity if it does.
-- **Error-based SQLi** — sends quote payloads and looks for database error
+- Error-based SQLi: sends quote payloads and looks for database error
   strings in the response. High if it finds any.
-- **Open redirect** — tries the usual redirect param names (`next`, `url`,
+- Open redirect: tries the usual redirect param names (`next`, `url`,
   `redirect`...) with an external URL and watches the `Location` header.
   Medium if it follows.
 
 Every probe also reports an `info` finding when it finds nothing, so you can
-see what actually ran. A clean result here doesn't mean you're safe — it just
+see what actually ran. A clean result here doesn't mean you're safe. It just
 means these particular light probes didn't catch anything. Stored XSS, blind
 SQLi, all that still needs real testing.
 
@@ -79,7 +79,7 @@ Summary: 0 high, 2 medium, 2 low, 6 info
 
 [INFO  ] No reflected XSS detected  (xss)
          Detail: Payload in parameter 'q' was not reflected verbatim.
-         Why it matters: A single benign probe is not proof of safety — stored XSS, DOM XSS, and filtered contexts need deeper testing.
+         Why it matters: A single benign probe is not proof of safety. Stored XSS, DOM XSS, and filtered contexts need deeper testing.
 ```
 
 ## What's in the repo
